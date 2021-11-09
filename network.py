@@ -4,8 +4,8 @@ import tensorflow as tf
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data_train = pd.read_csv('data/train/train.csv')
-data_test = pd.read_csv('data/train/test.csv')
+data_train = pd.read_csv('data/train.csv')
+data_test = pd.read_csv('data/test.csv')
 
 print(data_train.head())
 

@@ -8,7 +8,9 @@ import tensorflow_datasets as tfds
 import tensorflow as tf
 from os import system
 # Limpiamos la consola para mejor comodidad al desarollar
-system('cls')
+system('clear')
+
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
 data, metadata = tfds.load('cats_vs_dogs', as_supervised=True, with_info=True)
