@@ -2,3 +2,4 @@ logs
 data/cnn_detect_animal.h5
 data/test
 data/train
+data/model.h5

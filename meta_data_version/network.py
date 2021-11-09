@@ -78,3 +78,5 @@ print(y_test[0:10])
 print("Arbol de decisiones")
 print(modelTree.predict(X_test[0:10]))
 print(y_test[0:10])
+
+model.save('data/model.h5')
