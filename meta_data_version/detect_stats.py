@@ -126,13 +126,26 @@ def detect_text(path_image):
     else:
         return 1
 
+def detect_occluded(path_image):
+    image= cv2.imread(path_image)
+    mask = np.zeros(image.shape, dtype=np.uint8)
+    mask[np.where((image <= [15,15,15]).all(axis=2))] = [255,255,255]
+    mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+    h, w = image.shape[:2]
+    percentage = (cv2.countNonZero(mask)/ (w * h)) * 100
+    if percentage < 2:
+        return 0
+    else:
+        return 1
+
+
 def detect_stats(path_image):
     model_cnn = tf.keras.models.load_model('data/cnn_detect_animal.h5')
     subject_focus = detect_focus(path_image)
     blur_img = detect_blur(path_image)
     collage_image = detect_collage(path_image)
     is_humans = detect_humans(path_image)
-    oclussion = 0
+    oclussion = detect_occluded(path_image)
 
     image = cv2.imread(path_image)
     image = cv2.resize(image, (150, 150))
