@@ -1,11 +1,8 @@
 import cv2
 from matplotlib import pyplot as plt
-import pytesseract
-import re
 import tensorflow as tf
 import numpy as np
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-path = 'data/train/train/00b151a572c9aabedf8cfce0fa18be25.jpg'
+path = 'data/train/00b151a572c9aabedf8cfce0fa18be25.jpg'
 
 def detect_blur(path_image):
     img = cv2.imread(path_image)
@@ -30,18 +27,6 @@ def detect_humans(path_image):
     else:
         return 1
     
-def detect_text(path_image):
-    img = cv2.imread(path_image)
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
-    opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
-    invert = 255 - opening 
-    text=pytesseract.image_to_string(invert, lang='eng')
-    if len(text) == 0:
-        return 0
-    else:
-        return 1
 
 def detect_cats(path_image):
     img = cv2.imread(path_image)
