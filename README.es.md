@@ -1,6 +1,6 @@
 # Concurso Kaggle
 - 🇪🇸 Español
-- 🇺🇸 English
+- 🇺🇸 [English](https://github.com/Fernando2706/Pawpularity-Contest/blob/main/README.md)
 
 > Como tecnólogo, veo cómo la IA y la cuarta revolución industrial afectarán todos los aspectos de la vida de las personas.      Fei-Fei Li
 
