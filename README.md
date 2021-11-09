@@ -1,5 +1,5 @@
 # Kaggle Contest
-- 🇪🇸 Spanish
+- 🇪🇸 [Spanish](https://github.com/Fernando2706/Pawpularity-Contest/blob/main/README.es.md)
 - 🇺🇸 English
 
 > As a technologist, I see how AI and the fourth industrial revolution will affect all aspects of people's lives. Fei-Fei Li
