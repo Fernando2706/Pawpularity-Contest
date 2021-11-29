@@ -40,6 +40,7 @@ X_val = X[len_array:]
 y_train = y[:len_array]
 y_val = y[len_array:]
 
+print(y_train)
 print('\nWe are going to apply certain filters to the image\n')
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -80,13 +81,9 @@ model.add(tf.keras.layers.Dense(200,activation='relu'))
 model.add(tf.keras.layers.Dense(1,activation='sigmoid'))
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=tf.keras.optimizers.schedules.ExponentialDecay(
-        initial_learning_rate=1e-3,
-        decay_steps=1000,
-        decay_rate=0.96,
-        staircase=True)),
-    loss='mse',
-    metrics=[tf.keras.metrics.RootMeanSquaredError()]
+    optimizer='rmsprop',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
 )
 data_gen_train = data_gen.flow(X_train, y_train, batch_size=32)
 
@@ -110,11 +107,9 @@ print('\nLet`s make a prediction\n')
 import matplotlib.pyplot as plt
 
 image_test = X_val[0]
-plt.imshow(image.reshape(SIZE_IMAGE, SIZE_IMAGE), cmap='gray')
 #Reshape the image
 image = image.reshape(1,150, 150,1)
 #Plot the image
 prediction = model.predict([image])
 print(prediction)
-plt.show()
 

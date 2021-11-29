@@ -4,3 +4,7 @@ data/test
 data/train
 data/model.h5
 data/photo_version
+venv
+__pycache__
+my-app/node_modules
+img

@@ -6,7 +6,6 @@ import pytesseract
 import re
 import sys
 
-path = '../Pawpularity-Contest/data/train/0a05c55ca864b667d31c80ce2c68d6b3.jpg'
 
 def detect_blur(path_image):
     img = cv2.imread(path_image)
@@ -140,7 +139,7 @@ def detect_occluded(path_image):
 
 
 def detect_stats(path_image):
-    model_cnn = tf.keras.models.load_model('/data/photo_version/model.h5')
+    model_cnn = tf.keras.models.load_model('data/cnn_detect_animal.h5')
     subject_focus = detect_focus(path_image)
     blur_img = detect_blur(path_image)
     collage_image = detect_collage(path_image)
@@ -172,4 +171,48 @@ def detect_stats(path_image):
     predict = model.predict([[subject_focus,eyes,face,near,actions,accesories,group,collage_image,is_humans,oclussion,info,blur_img]])
     return predict
 
-sys.modules[__name__] = detect_stats
+
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+import os
+from werkzeug.utils import secure_filename
+import math   
+
+app = Flask(__name__)
+CORS(app)
+@app.route('/status')
+def index():
+    return jsonify(
+        message="Ok!",
+        status=200
+    )
+
+@app.route('/getPawpularity',methods=['POST']) 
+def getPawpularity():
+    if request.method == 'POST':
+        print(request.files['file'])
+        image = request.files['file']
+        filename = secure_filename(image.filename)
+        image.save(os.path.join('/home/fernando/Proyects/Pawpularity-Contest/img',filename))
+        path = '/home/fernando/Proyects/Pawpularity-Contest/img/'+filename   
+        predict = detect_stats(path)
+        message = str(math.ceil(predict[0][0]))
+        model = tf.keras.models.load_model('data/photo_version/model.h5')
+        img = cv2.imread(path)
+        img = cv2.resize(img, (150, 150))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = img.reshape(1,150, 150, 1)
+        predict1 = model.predict([img])
+        message1 = str(math.floor((predict1[0][0]*100)))
+        return jsonify(
+            message="Ok!",
+            predicts=message,
+            predict1=message1,
+            status=200
+        )
+    else:
+        return jsonify(
+            message="Bad Request",
+            status=500
+        )
+
