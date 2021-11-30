@@ -1,0 +1,10 @@
+logs
+data/cnn_detect_animal.h5
+data/test
+data/train
+data/model.h5
+data/photo_version
+venv
+__pycache__
+my-app/node_modules
+img
