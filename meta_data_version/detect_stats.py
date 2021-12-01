@@ -6,7 +6,7 @@ import pytesseract
 import re
 import sys
 
-path = '../Pawpularity-Contest/data/train/0a05c55ca864b667d31c80ce2c68d6b3.jpg'
+path = '../data/train/0a05c55ca864b667d31c80ce2c68d6b3.jpg'
 
 def detect_blur(path_image):
     img = cv2.imread(path_image)
@@ -23,7 +23,7 @@ def detect_blur(path_image):
 
 def detect_humans(path_image):
     img = cv2.imread(path_image)
-    face_cascade = cv2.CascadeClassifier('data/haarcascade_frontalface_alt.xml')
+    face_cascade = cv2.CascadeClassifier('../data/haarcascade_frontalface_alt.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces) == 0:
@@ -33,7 +33,7 @@ def detect_humans(path_image):
     
 def detect_cats(path_image):
     img = cv2.imread(path_image)
-    face_cascade = cv2.CascadeClassifier('data/haarcasdade_cat.xml')
+    face_cascade = cv2.CascadeClassifier('../data/haarcasdade_cat.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces) == 0:
@@ -43,7 +43,7 @@ def detect_cats(path_image):
 
 def detect_dogs(path_image):
     img = cv2.imread(path_image)
-    face_cascade = cv2.CascadeClassifier('data/haarcasdade_dog.xml')
+    face_cascade = cv2.CascadeClassifier('../data/haarcasdade_dog.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces) == 0:
@@ -53,7 +53,7 @@ def detect_dogs(path_image):
 
 def detect_cats_groups(path_image):
     img = cv2.imread(path_image)
-    face_cascade = cv2.CascadeClassifier('data/haarcasdade_cat.xml')
+    face_cascade = cv2.CascadeClassifier('../data/haarcasdade_cat.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces) < 1:
@@ -63,7 +63,7 @@ def detect_cats_groups(path_image):
 
 def detect_dogs_groups(path_image):
     img = cv2.imread(path_image)
-    face_cascade = cv2.CascadeClassifier('data/haarcasdade_dog.xml')
+    face_cascade = cv2.CascadeClassifier('../data/haarcasdade_dog.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces) < 1:
@@ -91,21 +91,21 @@ def distance(focal_lng,rf_width,object_width):
 def pet_data(image,isDog):
     pet_width = 0
     if isDog:
-        pet_detector= cv2.CascadeClassifier('data/haarcasdade_dog.xml')
+        pet_detector= cv2.CascadeClassifier('../data/haarcasdade_dog.xml')
     else:
-        pet_detector = cv2.CascadeClassifier('data/haarcasdade_cat.xml')
+        pet_detector = cv2.CascadeClassifier('../data/haarcasdade_cat.xml')
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     pets = pet_detector.detectMultiScale(gray_image, 1.3, 5)
 
     for (x, y, h, w) in pets:
-        cv2.rectangle(image, (x, y), (x+w, y+h), WHITE, 1)
+        cv2.rectangle(image, (x, y), (x+w, y+h), cv2.COLOR_WHITE, 1)
         pet_width = w
 
     return pet_width
 
 def detect_focus(path_image):
     img = cv2.imread(path_image)
-    eyes_cascade = cv2.CascadeClassifier('data/haarcascade_eye.xml')
+    eyes_cascade = cv2.CascadeClassifier('../data/haarcascade_eye.xml')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     eye = eyes_cascade.detectMultiScale(gray, 1.3, 5)
     if len(eye) == 0:
@@ -140,7 +140,7 @@ def detect_occluded(path_image):
 
 
 def detect_stats(path_image):
-    model_cnn = tf.keras.models.load_model('/data/photo_version/model.h5')
+    model_cnn = tf.keras.models.load_model('../data/photo_version/model.h5')
     subject_focus = detect_focus(path_image)
     blur_img = detect_blur(path_image)
     collage_image = detect_collage(path_image)
@@ -168,8 +168,10 @@ def detect_stats(path_image):
     info = detect_text(path_image)
     actions = 0
     near = 0
-    model = tf.keras.models.load_model('data/model.h5')
+    model = tf.keras.models.load_model('../data/model.h5')
     predict = model.predict([[subject_focus,eyes,face,near,actions,accesories,group,collage_image,is_humans,oclussion,info,blur_img]])
     return predict
 
+
+print(detect_stats(path))
 sys.modules[__name__] = detect_stats
