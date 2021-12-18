@@ -97,7 +97,7 @@ def pet_data(image,isDog):
     pets = pet_detector.detectMultiScale(gray_image, 1.3, 5)
 
     for (x, y, h, w) in pets:
-        cv2.rectangle(image, (x, y), (x+w, y+h), WHITE, 1)
+        cv2.rectangle(image, (x, y), (x+w, y+h), cv2.COLOR_WHITE, 1)
         pet_width = w
 
     return pet_width

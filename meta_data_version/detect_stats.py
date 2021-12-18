@@ -8,6 +8,10 @@ import sys
 
 path = '../Pawpularity-Contest/data/train/0a05c55ca864b667d31c80ce2c68d6b3.jpg'
 
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
+config = tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 def detect_blur(path_image):
     img = cv2.imread(path_image)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -140,7 +144,7 @@ def detect_occluded(path_image):
 
 
 def detect_stats(path_image):
-    model_cnn = tf.keras.models.load_model('/data/photo_version/model.h5')
+    model_cnn = tf.keras.models.load_model('data/photo_version/model.h5')
     subject_focus = detect_focus(path_image)
     blur_img = detect_blur(path_image)
     collage_image = detect_collage(path_image)
@@ -172,4 +176,6 @@ def detect_stats(path_image):
     predict = model.predict([[subject_focus,eyes,face,near,actions,accesories,group,collage_image,is_humans,oclussion,info,blur_img]])
     return predict
 
+
+print(detect_stats(path))
 sys.modules[__name__] = detect_stats

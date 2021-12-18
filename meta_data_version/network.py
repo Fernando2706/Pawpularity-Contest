@@ -44,8 +44,7 @@ model.compile(optimizer='adam', loss='mse', metrics=['mae'])
 history = model.fit(
     X_train,
     y_train,
-    epochs=100, validation_data=(X_test, y_test), validation_freq=1,
-    callbacks=[tf.keras.callbacks.EarlyStopping(patience=20)])
+    epochs=1000, validation_data=(X_test, y_test), validation_freq=1, verbose=3)
 
 
 print(history.history.keys())
@@ -55,7 +54,7 @@ plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
-#plt.show()
+plt.show()
 
 
 modelTree = RandomForestRegressor(n_estimators=100)
